@@ -28,7 +28,7 @@ class Matrix
         $this->maxValueGenerated = $maxValueGenerated;
     }
 
-    public function __toString()
+    public function stringify(): string
     {
         $rows = count($this->matrix);
         $length = strlen((string)$this->maxValueGenerated);
@@ -49,6 +49,44 @@ class Matrix
 
         return $result;
     }
+
+    public function getRowsSum(): string
+    {
+        $result = "[\n";
+
+        for ($rowNum = 1, $rowsCnt = count($this->matrix); $rowNum <= $rowsCnt; $rowNum++) {
+            $rowSum = array_sum($this->matrix[$rowNum - 1]);
+            $result .= "  {$rowNum}: {$rowSum}\n";
+        }
+
+        $result .= "]\n";
+
+        return $result;
+    }
+
+    public function getColsSum(): string
+    {
+        $resultArr = [];
+        $rowsCnt = count($this->matrix);
+        $colsCnt = count($this->matrix[0]);
+
+        for ($colIndex = 0; $colIndex < $colsCnt; $colIndex++) {
+            $colSum = 0;
+
+            for ($rowIndex = 0; $rowIndex < $rowsCnt; $rowIndex++) {
+                $colSum += $this->matrix[$rowIndex][$colIndex];
+            }
+
+            $resultArr[] = ($colIndex + 1) . ': ' . $colSum;
+        }
+
+        return "[\n  " . implode(' ', $resultArr) . "\n]\n";
+    }
 }
 
-echo new Matrix();
+$matrix = new Matrix();
+
+echo $matrix->stringify();
+echo 'Суммы по строкам: ' . $matrix->getRowsSum();
+echo 'Суммы по колонкам: ' . $matrix->getColsSum();
+
